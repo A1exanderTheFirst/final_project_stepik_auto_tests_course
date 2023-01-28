@@ -27,9 +27,6 @@ class ProductPage(BasePage):
         assert product_name == product_name_in_message, f"the product names don't match: " \
                                                         f"'{product_name}' != '{product_name_in_message}'"
 
-    def get_text_element(self, how, what):
-        return self.browser.find_element(how, what).text
-
     def should_be_same_price_of_product_and_basket(self):
         product_price = self.get_text_element(*ProductPageLocators.PRODUCT_PRICE)
         message_product_price = self.get_text_element(*ProductPageLocators.MESSAGE_CART_COST)
@@ -44,3 +41,11 @@ class ProductPage(BasePage):
 
         self.should_be_equal_product_names()
         self.should_be_same_price_of_product_and_basket()
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.MESSAGE_PRODUCT_ADDED_TO_CART), \
+            "Success message is presented, but should not be"
+
+    def should_disappear_of_success_message(self):
+        assert self.is_disappeared(*ProductPageLocators.MESSAGE_PRODUCT_ADDED_TO_CART), \
+            "the success message has not disappeared"
